@@ -1,0 +1,18 @@
+<h2>Dogs</h2>
+<div class="step-text">
+<p></p>
+<p>Look at the code below:</p>
+<pre><code class="language-python">from collections import defaultdict
+
+dogs = ["pomeranian", "labrador", "corgi", "corgi", "golden retriever", "corgi", "labrador"]
+
+dogs_dict = defaultdict(int)
+
+for dog in dogs:
+    dogs_dict[dog] += 1
+
+print(dogs_dict["corgi"])
+print(dogs_dict["husky"])
+print(dogs_dict["poodle"])</code></pre>
+<p>How many keys does the <code class="language-python">dogs_dict</code> have as a result of this code?</p>
+</div>

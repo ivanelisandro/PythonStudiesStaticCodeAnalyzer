@@ -1,0 +1,14 @@
+type: code
+files:
+- name: main.py
+  visible: true
+  highlight_level: NONE
+  text: |-
+    # `random_dict` has been defined
+    # the input is in the variable `word`
+    # write the rest of the code here
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/7994#comment
+status: Failed
+record: -1
+submission_language: python3

@@ -9,6 +9,9 @@ class Patterns:
     comment_spaces = r"(\ +)\#.+"
     comment_no_spaces = r"([\w\):])\#.+"
     todo_comments = r"\# TODO.*"
+    whitespaces_after_class = r"(def|class)\s{2,}"
+    class_name = r"class\s{1}(\w{1,})"
+    function_name = r"def\s{1}\_*([a-zA-Z0-9]{1,})\_*"
 
 
 class Rule:
@@ -121,3 +124,60 @@ class BlankLinesExcess(Rule):
 
         self.count_blank = 0
         return super().get_error(index)
+
+
+class TooManySpacesAfterDefClass(Rule):
+    def __init__(self):
+        self.name = ""
+        super().__init__("S007", "")
+
+    def verify(self, index, line_content):
+        excess_found = re.search(Patterns.whitespaces_after_class, line_content)
+        if not excess_found:
+            return None
+
+        self.message = f"Too many spaces after '{excess_found.group(1)}'."
+        return super().get_error(index)
+
+
+class ClassShouldUseCamelCase(Rule):
+    def __init__(self):
+        super().__init__("S008", "")
+
+    def verify(self, index, line_content):
+        class_found = re.search(Patterns.class_name, line_content)
+        if not class_found:
+            return None
+
+        class_name = class_found.group(1)
+        if class_name[0].isupper() and "_" not in class_name:
+            return None
+
+        self.message = f"Class name '{class_name}' should use CamelCase."
+        return super().get_error(index)
+
+
+class FunctionShouldUseSnakeCase(Rule):
+    def __init__(self):
+        super().__init__("S009", "")
+
+    def verify(self, index, line_content):
+        function_found = re.search(Patterns.function_name, line_content)
+        if not function_found:
+            return None
+
+        function_name = function_found.group(1)
+        if not any(character.isupper() for character in function_name):
+            return None
+
+        self.message = f"Function name '{function_name}' should use snake_case."
+        return super().get_error(index)
+
+
+class Rules:
+    all = [LineTooLong(), Indentation(),
+           Semicolon(), SpacesBeforeComment(),
+           Todo(), BlankLinesExcess(),
+           TooManySpacesAfterDefClass(),
+           ClassShouldUseCamelCase(),
+           FunctionShouldUseSnakeCase()]

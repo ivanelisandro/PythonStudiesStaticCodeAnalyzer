@@ -1,11 +1,9 @@
-from rules import LineTooLong, Indentation, Semicolon, SpacesBeforeComment, Todo, BlankLinesExcess
+from rules import Rules
 from source_retriever import SourceFile, SourceProject
 
 
 class RulesValidator:
-    rules = [LineTooLong(), Indentation(),
-             Semicolon(), SpacesBeforeComment(),
-             Todo(), BlankLinesExcess()]
+    rules = Rules.all
 
     def validate(self, path, lines):
         if not lines:

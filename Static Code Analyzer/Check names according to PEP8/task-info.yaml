@@ -453,6 +453,336 @@ files:
 
     if __name__ == '__main__':    AnalyzerTest("analyzer.code_analyzer").run_tests()
   learner_created: false
+- name: analyzer/validators.py
+  visible: true
+  text: |
+    from rules import LineTooLong, Indentation, Semicolon, SpacesBeforeComment, Todo, BlankLinesExcess
+    from source_retriever import SourceFile, SourceProject
+
+
+    class RulesValidator:
+        rules = [LineTooLong(), Indentation(),
+                 Semicolon(), SpacesBeforeComment(),
+                 Todo(), BlankLinesExcess()]
+
+        def validate(self, path, lines):
+            if not lines:
+                return
+
+            for index, line_content in enumerate(lines, start=1):
+                for rule in self.rules:
+                    error = rule.verify(index, line_content)
+                    if error:
+                        print(f"{path}: {error}")
+
+
+    class ProjectValidator:
+        validator = RulesValidator()
+
+        def run(self, project_path):
+            for file_path in SourceProject.get_files(project_path):
+                lines = SourceFile.get_lines(file_path)
+
+                self.validator.validate(file_path, lines)
+  learner_created: true
+- name: analyzer/source_retriever.py
+  visible: true
+  text: |+
+    from os.path import exists, isdir, isfile
+    from os import scandir
+
+
+    class SourceFile:
+        @staticmethod
+        def get_lines(file_path):
+            if not exists(file_path):
+                print("File not found.")
+                return None
+
+            with open(file_path, encoding='utf-8', mode='r') as file:
+                for line in file.readlines():
+                    yield line
+
+
+    class SourceDirectory:
+        @staticmethod
+        def get_files(directory_path):
+            for entry in scandir(directory_path):
+                if entry.is_file():
+                    yield entry.path
+                if entry.is_dir():
+                    yield from SourceDirectory.get_files(entry.path)
+
+
+    class SourceProject:
+        @staticmethod
+        def get_files(start_path):
+            if not exists(start_path):
+                print("File not found.")
+                return None
+
+            if isfile(start_path):
+                yield start_path
+            elif isdir(start_path):
+                yield from SourceDirectory.get_files(start_path)
+
+  learner_created: true
+- name: analyzer/rules.py
+  visible: true
+  text: |
+    from abc import abstractmethod
+    import re
+
+
+    class Patterns:
+        ignore_strings = r"(?<!\\)'([\w\ \?\!\{\},;:\.]|(\\'))+(?<!\\)'"
+        ignore_comments = r"\#.+"
+        whitespaces_exact = r"(\ )*"
+        comment_spaces = r"(\ +)\#.+"
+        comment_no_spaces = r"([\w\):])\#.+"
+        todo_comments = r"\# TODO.*"
+
+
+    class Rule:
+        def __init__(self, code, message):
+            self.code = code
+            self.message = message
+
+        @abstractmethod
+        def verify(self, index, line_content):
+            return None
+
+        def get_error(self, index):
+            return f"Line {index}: {self.code} {self.message}"
+
+
+    class LineTooLong(Rule):
+        max_characters = 79
+
+        def __init__(self):
+            super().__init__("S001", f"The line has more than {self.max_characters} characters.")
+
+        def verify(self, index, line_content):
+            if len(line_content) <= self.max_characters:
+                return None
+
+            return super().get_error(index)
+
+
+    class Indentation(Rule):
+        multiple_of = 4
+
+        def __init__(self):
+            super().__init__("S002", f"Indentation must be multiple of {self.multiple_of}.")
+
+        def verify(self, index, line_content):
+            match_found = re.match(Patterns.whitespaces_exact, line_content)
+            if not match_found:
+                return None
+
+            group = match_found.group()
+            if len(group) % self.multiple_of == 0:
+                return None
+
+            return super().get_error(index)
+
+
+    class Semicolon(Rule):
+        def __init__(self):
+            super().__init__("S003", f"Unnecessary semicolon after statement.")
+
+        def verify(self, index, line_content):
+            filtered_line = re.sub(Patterns.ignore_strings, "", line_content)
+            filtered_line = re.sub(Patterns.ignore_comments, "", filtered_line)
+            if ";" not in filtered_line:
+                return None
+
+            return super().get_error(index)
+
+
+    class SpacesBeforeComment(Rule):
+        required_spaces = 2
+
+        def __init__(self):
+            super().__init__("S004", f"There must be {self.required_spaces} spaces before inline comments.")
+
+        def verify(self, index, line_content):
+            filtered_line = re.sub(Patterns.ignore_strings, "", line_content)
+            comment_with_spaces = re.search(Patterns.comment_spaces, filtered_line)
+            comment_no_spaces = re.search(Patterns.comment_no_spaces, filtered_line)
+
+            if not comment_with_spaces and not comment_no_spaces:
+                return None
+
+            if comment_with_spaces:
+                group = comment_with_spaces.group(1)
+                if len(group) >= self.required_spaces:
+                    return None
+
+            return super().get_error(index)
+
+
+    class Todo(Rule):
+        def __init__(self):
+            super().__init__("S005", f"TODO found.")
+
+        def verify(self, index, line_content):
+            match_found = re.search(Patterns.todo_comments, line_content, re.IGNORECASE)
+            if not match_found:
+                return None
+
+            return super().get_error(index)
+
+
+    class BlankLinesExcess(Rule):
+        max_accepted = 2
+        blank = '\n'
+
+        def __init__(self):
+            self.count_blank = 0
+            super().__init__("S006", f"More than {self.max_accepted} blank lines preceding code.")
+
+        def verify(self, index, line_content):
+            if line_content == self.blank:
+                self.count_blank += 1
+                return None
+
+            if self.count_blank <= self.max_accepted:
+                self.count_blank = 0
+                return None
+
+            self.count_blank = 0
+            return super().get_error(index)
+  learner_created: true
+- name: analyzer/Stage1.md
+  visible: true
+  text: |-
+    # Stage 1:
+
+    ## Example input:
+    ```
+    print('What\'s your name?')
+    name = input()
+    print(f'Hello, {name}')  # here is an obvious comment: this prints a greeting with a name
+
+    very_big_number = 11_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000
+    print(very_big_number)
+    ```
+
+    ## Example output:
+    ```
+    Line 3: S001 Too long
+    Line 5: S001 Too long
+    ```
+  learner_created: true
+- name: analyzer/Stage4.md
+  visible: true
+  text: "# Stage 2:\n\nAdd naming rules:\n- S007: Too many spaces after construction_name\
+    \ (def or class);\n- S008: Class name class_name should be written in CamelCase;\n\
+    - S009: Function name function_name should be written in snake_case.\n\n\n## Generic\
+    \ examples:\n```\n# a simple class\nclass MyClass:\n    pass\n\n# a class based\
+    \ on inheritance\nclass MyClass(AnotherClass):\n    pass\n    \n# a simple function\n\
+    def do_magic():\n    pass\n```\n\n## Example input:\n```\nclass  Person:\n   \
+    \ pass\n\nclass user:\n\n    def __init__(self, login: str, password: str):\n\
+    \        self.login = login\n        self.password = password\n\n    @staticmethod\n\
+    \    def _print1():\n        print('q')\n\n    @staticmethod\n    def Print2():\n\
+    \        print('q')\n```\n\n## Example output:\n```\n/path/to/file/script.py:\
+    \ Line 1: S007 Too many spaces after 'class'\n/path/to/file/script.py: Line 4:\
+    \ S008 Class name 'user' should use CamelCase\n/path/to/file/script.py: Line 15:\
+    \ S009 Function name 'Print2' should use snake_case\n```"
+  learner_created: true
+- name: analyzer/Stage2.md
+  visible: true
+  text: |-
+    # Stage 2:
+
+    Add more rules:
+    - S002: Indentation is not a multiple of four;
+    - S003: Unnecessary semicolon after a statement (note that semicolons are acceptable in comments);
+    - S004: Less than two spaces before inline comments;
+    - S005: TODO found (in comments only and case-insensitive);
+    - S006: More than two blank lines preceding a code line (applies to the first non-empty line).
+
+
+    ## Example input:
+    ```
+    print('What\'s your name?') # reading an input
+    name = input();
+    print(f'Hello, {name}');  # here is an obvious comment: this prints a greeting with a name
+
+
+    very_big_number = 11_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000
+    print(very_big_number)
+
+
+
+    def some_fun():
+        print('NO TODO HERE;;')
+        pass; # Todo something
+    ```
+
+    ## Example output:
+    ```
+    Line 1: S004 At least two spaces required before inline comments
+    Line 2: S003 Unnecessary semicolon
+    Line 3: S001 Too long
+    Line 3: S003 Unnecessary semicolon
+    Line 6: S001 Too long
+    Line 11: S006 More than two blank lines used before this line
+    Line 13: S003 Unnecessary semicolon
+    Line 13: S004 At least two spaces required before inline comments
+    Line 13: S005 TODO found
+    ```
+  learner_created: true
+- name: analyzer/Stage3.md
+  visible: true
+  text: |-
+    # Stage 2:
+
+    Process multi-file projects:
+    - Project directory must now be a command-line argument;
+    - Example:
+    ```
+    python code_analyzer.py directory-or-file
+    ```
+    - Output should contain path to the analyzed file;
+    - Example:
+    ```
+    Path: Line X: Code Message
+    ```
+    - Output lines must be sorted in ascending order by file name, line number, and issue code.
+    - Ignore Non-Python files;
+
+
+    ## Example 1. Only a single file is specified as the input:
+    ```
+    > python code_analyzer.py /path/to/file/script.py
+    /path/to/file/script.py: Line 1: S004 At least two spaces required before inline comments
+    /path/to/file/script.py: Line 2: S003 Unnecessary semicolon
+    /path/to/file/script.py: Line 3: S001 Too long line
+    /path/to/file/script.py: Line 3: S003 Unnecessary semicolon
+    /path/to/file/script.py: Line 6: S001 Too long line
+    /path/to/file/script.py: Line 11: S006 More than two blank lines used before this line
+    /path/to/file/script.py: Line 13: S003 Unnecessary semicolon
+    /path/to/file/script.py: Line 13: S004 At least two spaces required before inline comments
+    /path/to/file/script.py: Line 13: S005 TODO found
+    ```
+
+    ## Example 2. The input path is a directory; the output should contain all Python files from it:
+    ```
+    > python code_analyzer.py /path/to/project
+    /path/to/project/__init__.py: Line 1: S001 Too long line
+    /path/to/project/script1.py: Line 1: S004 At least two spaces required before inline comments
+    /path/to/project/script1.py: Line 2: S003 Unnecessary semicolon
+    /path/to/project/script2.py: Line 1: S004 At least two spaces required before inline comments
+    /path/to/project/script2.py: Line 3: S001 Too long line
+    /path/to/project/somedir/script.py: Line 3: S001 Too long line
+    /path/to/project/test.py: Line 3: Line 13: S003 Unnecessary semicolon
+    ```
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9906#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Thu, 27 Jul 2023 09:19:47 UTC"
 record: -1

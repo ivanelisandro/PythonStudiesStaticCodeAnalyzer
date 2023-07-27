@@ -121,19 +121,3 @@ class BlankLinesExcess(Rule):
 
         self.count_blank = 0
         return super().get_error(index)
-
-
-class RulesValidator:
-    rules = [LineTooLong(), Indentation(),
-             Semicolon(), SpacesBeforeComment(),
-             Todo(), BlankLinesExcess()]
-
-    def validate(self, lines):
-        if not lines:
-            return
-
-        for index, line_content in enumerate(lines, start=1):
-            for rule in self.rules:
-                error = rule.verify(index, line_content)
-                if error:
-                    print(error)

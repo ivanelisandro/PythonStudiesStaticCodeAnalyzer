@@ -649,6 +649,15 @@ files:
         print('NO TODO HERE;;')
         pass; # Todo something
   learner_created: false
+- name: analyzer/Stage3.md
+  visible: true
+  learner_created: true
+- name: analyzer/validators.py
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9905#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Thu, 27 Jul 2023 08:06:25 UTC"
 record: -1

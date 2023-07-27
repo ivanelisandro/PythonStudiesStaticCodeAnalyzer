@@ -1,7 +1,8 @@
-from source_retriever import SourceFile
-from rules import RulesValidator
+from validators import ProjectValidator
+import sys
 
-lines = SourceFile.get_lines(input())
 
-validator = RulesValidator()
-validator.validate(lines)
+start_path = sys.argv[1]
+
+analyzer = ProjectValidator()
+analyzer.run(start_path)

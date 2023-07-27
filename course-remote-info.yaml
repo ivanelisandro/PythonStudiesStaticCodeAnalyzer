@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/24956/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Mon, 26 Jun 2023 05:12:35 UTC"
+update_date: "Thu, 27 Jul 2023 06:44:22 UTC"
 stages:
 - id: 609
   step: 9903
@@ -56,42 +56,42 @@ topics:
     theory_id: 6057
   - title: Packages
     theory_id: 6384
-  - title: Introduction to OOP
-    theory_id: 3614
   - title: Taking input
     theory_id: 5913
   - title: Naming variables
     theory_id: 5885
-  - title: Pip
-    theory_id: 6230
-  - title: Virtual Environment
-    theory_id: 13923
   - title: Program with numbers
     theory_id: 5872
   - title: If statement
     theory_id: 5953
   - title: Else statement
     theory_id: 5932
+  - title: Introduction to OOP
+    theory_id: 3614
   - title: Class
     theory_id: 6661
   - title: Class instances
     theory_id: 6669
-  - title: For loop
-    theory_id: 6065
-  - title: While loop
-    theory_id: 5940
-  - title: Loop control statements
-    theory_id: 6302
   - title: Methods
     theory_id: 6931
   - title: Methods and attributes
     theory_id: 6981
   - title: Magic methods
     theory_id: 7139
-  - title: Elif statement
-    theory_id: 5926
+  - title: Pip
+    theory_id: 6230
+  - title: Virtual Environment
+    theory_id: 13923
+  - title: For loop
+    theory_id: 6065
+  - title: While loop
+    theory_id: 5940
+  - title: Loop control statements
+    theory_id: 6302
   - title: PyCharm basics
     theory_id: 6193
+  - title: Elif statement
+    theory_id: 5926
   - title: Program execution
     theory_id: 6047
   - title: Errors
@@ -102,12 +102,12 @@ topics:
     theory_id: 11680
   - title: Exception handling
     theory_id: 6270
-  - title: Running Python applications in PyCharm
-    theory_id: 19153
   - title: Inheritance
     theory_id: 9844
   - title: Inheritance in Python
     theory_id: 7235
+  - title: Running Python applications in PyCharm
+    theory_id: 19153
   - title: Polymorphism
     theory_id: 10027
   - title: Method overriding
@@ -120,12 +120,12 @@ topics:
     theory_id: 9526
   - title: File modes and permissions
     theory_id: 13953
+  - title: Intro to computational thinking
+    theory_id: 8742
   - title: Files in Python
     theory_id: 8691
   - title: Reading files
     theory_id: 8139
-  - title: Intro to computational thinking
-    theory_id: 8742
   - title: Basic data types
     theory_id: 5852
   - title: Variables
@@ -165,34 +165,34 @@ topics:
     theory_id: 9253
   - title: Components of computational thinking
     theory_id: 8745
+  - title: Arguments
+    theory_id: 7248
   - title: Indexes
     theory_id: 6189
   - title: Identity testing
     theory_id: 8077
-  - title: Arguments
-    theory_id: 7248
+  - title: Operations with list
+    theory_id: 6031
   - title: Objects in Python
     theory_id: 9262
-  - title: List comprehension
-    theory_id: 6315
+  - title: Default arguments
+    theory_id: 10295
   - title: Dictionary
     theory_id: 6481
   - title: Dictionary methods
     theory_id: 9008
   - title: Operations with dictionary
     theory_id: 11096
-  - title: Operations with list
-    theory_id: 6031
-  - title: Default arguments
-    theory_id: 10295
-  - title: Lambda functions
-    theory_id: 7092
   - title: Tuple
     theory_id: 7462
   - title: Args
     theory_id: 8560
   - title: Kwargs
     theory_id: 9544
+  - title: List comprehension
+    theory_id: 6315
+  - title: Lambda functions
+    theory_id: 7092
   - title: Slicing
     theory_id: 6177
   - title: Sorting a list
@@ -208,10 +208,10 @@ topics:
     theory_id: 7545
   - title: os module
     theory_id: 11119
-  - title: Docstrings
-    theory_id: 11869
   - title: Unit testing in Python
     theory_id: 10795
+  - title: Docstrings
+    theory_id: 11869
   - title: Pydoc
     theory_id: 18505
   - title: Command line arguments

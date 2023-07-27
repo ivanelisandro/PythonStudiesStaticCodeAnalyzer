@@ -1,0 +1,26 @@
+type: matching
+captions:
+- 88
+- 101
+- 276
+- 300
+options:
+- out of limit
+- the second interval
+- the first interval
+- the third interval
+files:
+- name: main.py
+  visible: true
+  text: |+
+    #  You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/5929#comment
+status: Solved
+record: -1
+ordering:
+- 0
+- 1
+- 2
+- 3

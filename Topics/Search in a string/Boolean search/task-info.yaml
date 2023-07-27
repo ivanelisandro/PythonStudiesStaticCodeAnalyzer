@@ -2,13 +2,13 @@ type: choice
 is_multiple_choice: false
 options:
 - text: 1010
-- text: 0010
-- text: 0110
+- text: '0010'
+- text: '0110'
 - text: 1001
-- text: 0000
+- text: '0000'
 - text: 1111
-- text: 0101
-- text: 0111
+- text: '0101'
+- text: '0111'
 files:
 - name: main.py
   visible: true

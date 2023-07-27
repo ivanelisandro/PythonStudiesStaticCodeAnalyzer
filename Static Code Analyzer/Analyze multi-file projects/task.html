@@ -38,9 +38,7 @@
 </li>
 </ul>
 <h5 id="examples">Examples</h5>
-<ol>
-<li>
-<p>Only a single file is specified as the input:</p>
+<p><strong>Example 1.</strong> Only a single file is specified as the input:</p>
 <pre><code class="language-no-highlight">&gt; python code_analyzer.py /path/to/file/script.py
 /path/to/file/script.py: Line 1: S004 At least two spaces required before inline comments
 /path/to/file/script.py: Line 2: S003 Unnecessary semicolon
@@ -52,9 +50,7 @@
 /path/to/file/script.py: Line 13: S004 At least two spaces required before inline comments
 /path/to/file/script.py: Line 13: S005 TODO found
 </code></pre>
-</li>
-<li>
-<p>The input path is a directory; the output should contain all Python files from it:</p>
+<p><strong>Example 2.</strong> The input path is a directory; the output should contain all Python files from it:</p>
 <pre><code class="language-no-highlight">&gt; python code_analyzer.py /path/to/project
 /path/to/project/__init__.py: Line 1: S001 Too long line
 /path/to/project/script1.py: Line 1: S004 At least two spaces required before inline comments
@@ -64,6 +60,4 @@
 /path/to/project/somedir/script.py: Line 3: S001 Too long line
 /path/to/project/test.py: Line 3: Line 13: S003 Unnecessary semicolon
 </code></pre>
-</li>
-</ol>
 </div>

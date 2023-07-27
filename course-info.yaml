@@ -7,6 +7,7 @@ summary: "<p>In this project, you will create a simple static analyzer tool that
   \ <a href=\"https://hyperskill.org/projects/112?utm_source=ide&utm_medium=ide&utm_campaign=ide&utm_content=project-card\"\
   >https://hyperskill.org/projects/112</a>"
 programming_language: Python
+environment: unittest
 content:
 - Topics
 - Static Code Analyzer

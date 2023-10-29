@@ -1,18 +1,18 @@
 type: choice
 is_multiple_choice: false
 options:
-- text: 2
-- text: 4
-- text: 6
-- text: 7
-- text: 9
+  - text: 2
+  - text: 4
+  - text: 6
+  - text: 7
+  - text: 9
 files:
-- name: main.py
-  visible: true
-  text: |+
-    #  You can experiment here, it won’t be checked
-
-  learner_created: false
+  - name: main.py
+    visible: true
+    text: |+
+      #  You can experiment here, it won’t be checked
+    
+    learner_created: false
 feedback_link: https://hyperskill.org/learn/step/7990#comment
 status: Solved
 record: -1

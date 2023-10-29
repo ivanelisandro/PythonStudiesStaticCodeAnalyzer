@@ -1,12 +1,12 @@
 type: code
 files:
-- name: main.py
-  visible: true
-  highlight_level: NONE
-  text: |-
-    def what_to_do(instructions):
-        ...
-  learner_created: false
+  - name: main.py
+    visible: true
+    highlight_level: NONE
+    text: |-
+      def what_to_do(instructions):
+          ...
+    learner_created: false
 feedback_link: https://hyperskill.org/learn/step/9560#comment
 status: Solved
 record: -1

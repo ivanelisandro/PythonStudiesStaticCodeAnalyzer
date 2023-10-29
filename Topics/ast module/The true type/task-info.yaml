@@ -1,12 +1,12 @@
 type: code
 files:
-- name: main.py
-  visible: true
-  text: |-
-    import ast
-
-    # put your code here
-  learner_created: false
+  - name: main.py
+    visible: true
+    text: |-
+      import ast
+      
+      # put your code here
+    learner_created: false
 feedback_link: https://hyperskill.org/learn/step/15495#comment
 status: Solved
 feedback:

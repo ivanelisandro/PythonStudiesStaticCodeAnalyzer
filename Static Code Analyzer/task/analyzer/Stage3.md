@@ -1,4 +1,4 @@
-# Stage 2:
+# Stage 3:
 
 Process multi-file projects:
 - Project directory must now be a command-line argument;

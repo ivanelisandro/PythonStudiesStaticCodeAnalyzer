@@ -721,6 +721,16 @@ files:
       /path/to/project/test.py: Line 3: Line 13: S003 Unnecessary semicolon
       ```
     learner_created: true
+  - name: analyzer/Stage5.md
+    visible: true
+    learner_created: true
+  - name: analyzer/ast_rules.py
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9907#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">Hyperskill</a>
+    to continue learning.
+  time: "Sun, 29 Oct 2023 05:36:52 UTC"
 record: -1

@@ -1,4 +1,4 @@
-# Stage 2:
+# Stage 4:
 
 Add naming rules:
 - S007: Too many spaces after construction_name (def or class);
